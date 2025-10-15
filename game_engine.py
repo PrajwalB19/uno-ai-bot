@@ -27,7 +27,7 @@ class Card:
         if self.special is not None and self.special == other_card.special:
             return True
         return False
-    
+
     @staticmethod
     def path_finder(number, color, special):
         if special == "Wild":
@@ -41,7 +41,6 @@ class Card:
         elif number is not None and color is not None:
             return os.path.join("assets", f"{color}_{number}.png")
         return None
-    
 
 class Player:
     def __init__(self, player_id):
@@ -57,7 +56,6 @@ class Player:
             return card
         return None
 
-
 class Strategy:
     @staticmethod
     def choose_random_card(hand, top_card):
@@ -65,7 +63,7 @@ class Strategy:
         if playable_cards:
             return random.choice(playable_cards)
         return None
-    
+
     @staticmethod
     def choose_with_priority(hand, top_card):
         playable_cards = [card for card in hand if card.is_playable_on(top_card)]
@@ -82,7 +80,7 @@ class Strategy:
                     return card
 
         return playable_cards[0]
-    
+
     @staticmethod
     def monte_carlo_card(game, player_id, simulations=50):
         player = game.players[player_id]
@@ -96,7 +94,7 @@ class Strategy:
 
         for card in playable_cards:
             for i in range(simulations):
-                
+
                 sim_game = deepcopy(game)
                 sim_player = sim_game.players[player_id]
 
@@ -124,7 +122,6 @@ class Strategy:
 
         best_card = max(card_scores, key=lambda c: card_scores[c])
         return best_card
-    
 
 class Game:
     def __init__(self, num_players=1, difficulty=1, simulations=50):
@@ -141,7 +138,7 @@ class Game:
 
     def create_deck(self):
         deck = []
-        
+
         for i in list(range(0, 10)) + list(range(1, 10)):
             for color in ["Red", "Green", "Blue", "Yellow"]:
                 deck.append(Card(number=i, color=color))
@@ -157,7 +154,7 @@ class Game:
 
         random.shuffle(deck)
         return deck
-    
+
     def game_setup(self, hand_size=7):
         for i in range(hand_size):
             for player in self.players.values():
@@ -274,7 +271,7 @@ class Game:
             card_effect["Skip"] = True
         elif card.special == "Reverse":
             card_effect["Reverse"] = True
-        
+
         return card_effect
 
     def log_move(self, player_id, action, card):
